@@ -18,14 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from projects.views import home
+from accounts.views import register # On importe notre nouvelle vue
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     
-    # On force Django à utiliser notre fichier précis pour la connexion
-    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    # Route pour l'inscription
+    path('register/', register, name='register'),
     
-    # On garde le reste pour la déconnexion automatique
+    # Routes pour la connexion / déconnexion
+    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('', include('django.contrib.auth.urls')),
 ]
