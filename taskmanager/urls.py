@@ -16,11 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 from projects.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('', include('django.contrib.auth.urls')),  # Active automatiquement /login/ et /logout/
-]
     
+    # On force Django à utiliser notre fichier précis pour la connexion
+    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    
+    # On garde le reste pour la déconnexion automatique
+    path('', include('django.contrib.auth.urls')),
+]
