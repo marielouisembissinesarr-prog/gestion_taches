@@ -17,17 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from projects.views import home
-from accounts.views import register # On importe notre nouvelle vue
+from projects.views import home, create_project  # On ajoute create_project ici
+from accounts.views import register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     
-    # Route pour l'inscription
-    path('register/', register, name='register'),
+    # Route pour la création de projet
+    path('projet/creer/', create_project, name='create_project'),
     
-    # Routes pour la connexion / déconnexion
+    path('register/', register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('', include('django.contrib.auth.urls')),
 ]
