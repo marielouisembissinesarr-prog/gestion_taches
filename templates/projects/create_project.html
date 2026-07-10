@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un nouveau projet</title>
+</head>
+<body>
+    <div style="max-width: 500px; margin: 50px auto; font-family: sans-serif;">
+        <h2>Créer un nouveau projet</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer;">
+                Enregistrer le projet
+            </button>
+        </form>
+        
+        <br>
+        <a href="{% url 'home' %}">Retour à l'accueil</a>
+    </div>
+</body>
+</html>
