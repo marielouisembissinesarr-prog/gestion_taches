@@ -120,3 +120,14 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 CSRF_TRUSTED_ORIGINS = ['https://gestiontaches-production-f5b2.up.railway.app']
+import os
+from django.db.models.signals import post_migrate
+from django.contrib.auth import get_user_model
+
+def create_default_superuser(sender, **kwargs):
+    User = get_user_model()
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@example.com', 'Django2026!')
+        print("Superutilisateur 'admin' créé avec succès !")
+
+post_migrate.connect(create_default_superuser)
