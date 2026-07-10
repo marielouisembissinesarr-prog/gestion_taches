@@ -58,7 +58,7 @@ ROOT_URLCONF = 'taskmanager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # <-- On a ajouté le chemin ici !
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

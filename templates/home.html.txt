@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Gestionnaire de Tâches</title>
+</head>
+<body>
+    <h1>Bienvenue sur mon application de gestion de tâches !</h1>
+    <p>Le site est officiellement fonctionnel et en ligne.</p>
+</body>
+</html>
