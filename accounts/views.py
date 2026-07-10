@@ -12,4 +12,4 @@ def register(request):
             return redirect('login')
     else:
         form = UserCreationForm()
-    return render(request, 'accounts/register.html', {'form': form}) Create your views here.
+    return render(request, 'accounts/register.html', {'form': form})
