@@ -16,18 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from accounts import views  # On importe nos vues toutes neuves !
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.home, name='home'),  # <-- On connecte la page d'accueil à notre fonction home !
 ]
-from django.contrib.auth import get_user_model
-from django.db.utils import IntegrityError
 
+# --- Ton code pour le compte patron (on le laisse) ---
+from django.contrib.auth import get_user_model
 try:
     User = get_user_model()
-    # On crée le compte 'patron' automatiquement au démarrage du site
     if not User.objects.filter(username='patron').exists():
         User.objects.create_superuser('patron', 'patron@example.com', 'DerniereChance2026!')
-        print("COMPTE PATRON CRÉÉ AVEC SUCCÈS SUR LE SITE WEB !")
 except Exception as e:
-    print(f"Erreur création auto : {e}")
+    pass
