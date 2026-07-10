@@ -1,7 +1,7 @@
 from django import forms
-from .models import Project  # Assure-toi que ton modèle s'appelle bien Project
+from .models import Projet
 
-class ProjectForm(forms.ModelForm):
+class ProjetForm(forms.ModelForm):
     class Meta:
-        model = Project
-        fields = ['name', 'description']  # Mets ici les vrais noms de tes champs s'ils sont différents
+        model = Projet
+        fields = ['nom', 'description']  # Tes champs en français !

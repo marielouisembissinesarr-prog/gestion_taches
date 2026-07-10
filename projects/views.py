@@ -1,15 +1,18 @@
 from django.shortcuts import render, redirect
-from .forms import ProjectForm
+from .forms import ProjetForm
 
 def home(request):
     return render(request, 'home.html')
 
 def create_project(request):
     if request.method == 'POST':
-        form = ProjectForm(request.POST)
+        form = ProjetForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('home')  # Redirige vers l'accueil une fois créé
+            # On associe automatiquement l'utilisateur connecté comme créateur du projet
+            projet = form.save(commit=False)
+            projet.createur = request.user
+            projet.save()
+            return redirect('home')
     else:
-        form = ProjectForm()
+        form = ProjetForm()
     return render(request, 'projects/create_project.html', {'form': form})
