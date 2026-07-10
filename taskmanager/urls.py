@@ -20,3 +20,14 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+from django.contrib.auth import get_user_model
+from django.db.utils import IntegrityError
+
+try:
+    User = get_user_model()
+    # On crée le compte 'patron' automatiquement au démarrage du site
+    if not User.objects.filter(username='patron').exists():
+        User.objects.create_superuser('patron', 'patron@example.com', 'DerniereChance2026!')
+        print("COMPTE PATRON CRÉÉ AVEC SUCCÈS SUR LE SITE WEB !")
+except Exception as e:
+    print(f"Erreur création auto : {e}")
