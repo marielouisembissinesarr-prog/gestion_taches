@@ -8,9 +8,10 @@ def create_project(request):
         form = ProjetForm(request.POST)
         if form.is_valid():
             projet = form.save(commit=False)
-            projet.createur = request.user  # Ici, request.user sera forcément un vrai utilisateur connecté
+            projet.createur = request.user
             projet.save()
-            return redirect('home')  # Assure-toi que l'URL 'home' existe, sinon remplace temporairement par '/'
+            # On redirige vers la racine brute en attendant de configurer la page d'accueil
+            return redirect('/')  
     else:
         form = ProjetForm()
     
