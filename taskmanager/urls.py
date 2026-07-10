@@ -15,19 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from accounts import views  # On importe nos vues toutes neuves !
+from django.urls import path, include
+from projects.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),  # <-- On connecte la page d'accueil à notre fonction home !
+    path('', home, name='home'),
+    path('', include('django.contrib.auth.urls')),  # Active automatiquement /login/ et /logout/
 ]
-
-# --- Ton code pour le compte patron (on le laisse) ---
-from django.contrib.auth import get_user_model
-try:
-    User = get_user_model()
-    if not User.objects.filter(username='patron').exists():
-        User.objects.create_superuser('patron', 'patron@example.com', 'DerniereChance2026!')
-except Exception as e:
-    pass
+    
