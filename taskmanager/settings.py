@@ -33,8 +33,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_interface',
-    'color_field',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
