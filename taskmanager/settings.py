@@ -131,3 +131,4 @@ def create_default_superuser(sender, **kwargs):
         print("Superutilisateur 'admin' créé avec succès !")
 
 post_migrate.connect(create_default_superuser)
+LOGIN_URL = 'login'
