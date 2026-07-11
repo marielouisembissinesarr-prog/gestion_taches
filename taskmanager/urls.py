@@ -17,12 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView  # On ajoute ça pour la redirection
 from projects.views import create_project
 from accounts.views import register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('', home, name='home'),
+    
+    # Redirection magique : si Django cherche accounts/login/, on l'envoie sur login/
+    path('accounts/login/', RedirectView.as_view(pattern_name='login', permanent=False)),
     
     # Route pour la création de projet
     path('projet/creer/', create_project, name='create_project'),
