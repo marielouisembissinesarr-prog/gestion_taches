@@ -15,22 +15,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from django.contrib.auth import views as auth_views
-from django.views.generic import RedirectView  # On ajoute ça pour la redirection
-from projects.views import create_project
-from accounts.views import register
+from accounts.views import register  # Ajuste si ta vue profil y est aussi
+from projects import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Redirection magique : si Django cherche accounts/login/, on l'envoie sur login/
-    path('accounts/login/', RedirectView.as_view(pattern_name='login', permanent=False)),
-    
-    # Route pour la création de projet
-    path('projet/creer/', create_project, name='create_project'),
-    
-    path('register/', register, name='register'),
+    # Authentification
     path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
-    path('', include('django.contrib.auth.urls')),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('register/', register, name='register'),
+    
+    # Application Projets & Tâches (Conforme section 5.2 du rapport)
+    path('', views.dashboard, name='dashboard'),
+    path('projet/creer/', views.projet_create, name='projet_create'),
+    path('projet/<int:id>/', views.projet_detail, name='projet_detail'),
+    path('projet/<int:id>/modifier/', views.projet_update, name='projet_update'),
+    path('projet/<int:id>/supprimer/', views.projet_delete, name='projet_delete'),
+    
+    path('projet/<int:projet_id>/tache/creer/', views.tache_create, name='tache_create'),
+    path('tache/<int:id>/', views.tache_detail, name='tache_detail'),
+    path('tache/<int:id>/modifier/', views.tache_update, name='tache_update'),
+    path('tache/<int:id>/supprimer/', views.tache_delete, name='tache_delete'),
 ]

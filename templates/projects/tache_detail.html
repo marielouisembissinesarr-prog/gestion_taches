@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détail de la Tâche</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .btn { padding: 8px 12px; color: white; text-decoration: none; border-radius: 4px; font-size: 14px; display: inline-block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'projet_detail' tache.projet.id %}">← Retour au projet</a>
+        <h1>{{ tache.titre }}</h1>
+        <p><strong>Description :</strong> {{ tache.description|default:"Aucune description." }}</p>
+        <p><strong>Statut :</strong> {{ tache.get_statut_display }}</p>
+        <p><strong>Priorité :</strong> {{ tache.get_priorite_display }}</p>
+        <p><strong>Date limite (Deadline) :</strong> {{ tache.deadline|default:"Pas de date limite définie" }}</p>
+        
+        <a href="{% url 'tache_update' tache.id %}" class="btn" style="background: #ffc107; color: black;">Modifier la tâche</a>
+        <a href="{% url 'tache_delete' tache.id %}" class="btn" style="background: #dc3545;">Supprimer la tâche</a>
+    </div>
+</body>
+</html>

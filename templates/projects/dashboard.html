@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord - Gestion de Tâches</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .btn { padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+        .project-card { background: #fafafa; border: 1px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mon Tableau de Bord</h1>
+            <div>
+                <a href="{% url 'projet_create' %}" class="btn" style="background: #28a745;">+ Créer un Projet</a>
+                <a href="{% url 'logout' %}" class="btn" style="background: #dc3545; margin-left: 10px;">Déconnexion</a>
+            </div>
+        </div>
+        <p>Bienvenue, <strong>{{ request.user.username }}</strong> !</p>
+
+        <h2>Mes Projets</h2>
+        {% for projet in projets %}
+            <div class="project-card">
+                <h3><a href="{% url 'projet_detail' projet.id %}">{{ projet.nom }}</a></h3>
+                <p>{{ projet.description|truncatewords:20 }}</p>
+                <small>Créé par : {{ projet.createur.username }}</small>
+            </div>
+        {% empty %}
+            <p>Aucun projet pour le moment. Commencez par en créer un !</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

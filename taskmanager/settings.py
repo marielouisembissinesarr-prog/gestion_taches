@@ -132,3 +132,7 @@ def create_default_superuser(sender, **kwargs):
 
 post_migrate.connect(create_default_superuser)
 LOGIN_URL = 'login'
+
+
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'

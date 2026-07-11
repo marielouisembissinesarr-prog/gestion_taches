@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ projet.nom }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .btn { padding: 8px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 14px; }
+        .tache-card { border-left: 4px solid #007bff; background: #f9f9f9; padding: 10px 15px; margin: 10px 0; }
+        .badge { padding: 3px 8px; border-radius: 3px; font-size: 12px; color: white; font-weight: bold; }
+        .todo { background: #6c757d; } .en_cours { background: #ffc107; color: black; } .termine { background: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'dashboard' %}">← Retour au tableau de bord</a>
+        <h1>{{ projet.nom }}</h1>
+        <p>{{ projet.description }}</p>
+        
+        <p>
+            <small>Créateur : <strong>{{ projet.createur.username }}</strong></small>
+            {% if projet.createur == request.user %}
+                | <a href="{% url 'projet_update' projet.id %}" style="color: #ffc107;">Modifier le projet</a>
+                | <a href="{% url 'projet_delete' projet.id %}" style="color: #dc3545;">Supprimer le projet</a>
+            {% endif %}
+        </p>
+
+        <hr>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+            <h2>Tâches associées</h2>
+            <a href="{% url 'tache_create' projet.id %}" class="btn" style="background: #28a745;">+ Ajouter une Tâche</a>
+        </div>
+
+        {% for tache in taches %}
+            <div class="tache-card">
+                <h3><a href="{% url 'tache_detail' tache.id %}">{{ tache.titre }}</a></h3>
+                <p>{{ tache.description|truncatewords:15 }}</p>
+                <p>
+                    <span class="badge {{ tache.statut }}">{{ tache.get_statut_display }}</span>
+                    <span class="badge" style="background: #17a2b8;">Priorité : {{ tache.get_priorite_display }}</span>
+                    {% if tache.assignee %}
+                        <small style="margin-left: 10px;">Assignée à : <strong>{{ tache.assignee.username }}</strong></small>
+                    {% else %}
+                        <small style="margin-left: 10px; color: #dc3545;">Non assignée</small>
+                    {% endif %}
+                </p>
+            </div>
+        {% empty %}
+            <p style="color: #777;">Aucune tâche dans ce projet pour le moment.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

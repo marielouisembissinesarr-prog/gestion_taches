@@ -1,0 +1,5 @@
+<form method="post">{% csrf_token %}
+    <p>Êtes-vous sûr de vouloir supprimer définitivement le projet "{{ projet.nom }}" ?</p>
+    <button type="submit" style="background:#dc3545; color:white; padding:10px;">Confirmer la suppression</button>
+    <a href="{% url 'dashboard' %}">Annuler</a>
+</form>
