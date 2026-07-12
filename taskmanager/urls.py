@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from accounts.views import register  # Ajuste si ta vue profil y est aussi
+from accounts.views import register_view  # Ajuste si ta vue profil y est aussi
 from projects import views
 
 urlpatterns = [
@@ -26,7 +26,7 @@ urlpatterns = [
     # Authentification
     path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-    path('register/', register, name='register'),
+    path('register/', register_view, name='register'),
     
     # Application Projets & Tâches (Conforme section 5.2 du rapport)
     path('', views.dashboard, name='dashboard'),
