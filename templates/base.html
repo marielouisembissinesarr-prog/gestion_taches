@@ -17,13 +17,8 @@
                     <span class="navbar-text me-3 text-light small">Bonjour, <strong>{{ user.username }}</strong></span>
                     <a class="nav-link me-2" href="/">Tableau de bord</a>
                     
-                    <!-- Formulaire POST sécurisé pour éviter l'erreur 405 -->
-                    <form action="{% url 'logout' %}" method="post" class="d-inline m-0 p-0">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-link nav-link text-danger border-0 m-0 p-0" style="background: none; vertical-align: baseline;">
-                            Déconnexion
-                        </button>
-                    </form>
+                    <!-- Lien direct pour la déconnexion en GET -->
+                    <a class="nav-link text-danger fw-bold" href="{% url 'logout' %}">Déconnexion</a>
                 {% else %}
                     <!-- Options affichées si l'utilisateur est un visiteur -->
                     <a class="nav-link" href="/login/">Connexion</a>
