@@ -137,5 +137,14 @@ post_migrate.connect(create_default_superuser)
 LOGIN_URL = 'login'
 
 
-LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'login'
+# Configuration de la sécurité pour la production sur Railway
+CSRF_TRUSTED_ORIGINS = [
+    'https://gestiontaches-production-f5b2.up.railway.app',
+]
+
+# Assure-toi aussi que cette variable est bien configurée pour autoriser le domaine
+ALLOWED_HOSTS = [
+    'gestiontaches-production-f5b2.up.railway.app',
+    'localhost',
+    '127.0.0.1',
+]

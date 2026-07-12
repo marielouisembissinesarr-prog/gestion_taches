@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+# {% extends 'base.html' %}
 
-{% block content %}
+#{% block content %}
 <div class="row justify-content-center">
     <div class="col-md-5">
         <div class="card shadow-sm border-0 bg-white p-4 mt-3">
@@ -8,6 +8,13 @@
                 <h2 class="h4 fw-bold text-center text-dark mb-4">Créer un compte collaborateur</h2>
                 
                 <form method="POST">
+                    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger small py-2 text-center" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
                     {% csrf_token %}
                     
                     <div class="mb-3">
@@ -41,4 +48,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
+#{% endblock %}
