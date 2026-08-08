@@ -1,27 +1,21 @@
 from django import forms
-from .models import Projet
-
-class ProjetForm(forms.ModelForm):
-    class Meta:
-        model = Projet
-        fields = ['nom', 'description']  # Tes champs en français !
-
-
-from django import forms
 from .models import Projet, Tache
 
 class ProjetForm(forms.ModelForm):
     class Meta:
         model = Projet
-        fields = ['nom', 'description', 'membres']
-        widgets = {
-            'membres': forms.CheckboxSelectMultiple(),
-        }
+        fields = ['titre', 'description', 'membres']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Rendre la sélection de membres optionnelle pour autoriser les projets solo
+        self.fields['membres'].required = False
+
 
 class TacheForm(forms.ModelForm):
     class Meta:
         model = Tache
-        fields = ['titre', 'description', 'assignee', 'statut', 'priorite', 'deadline']
+        fields = ['titre', 'description', 'statut', 'priorite', 'date_echeance']
         widgets = {
-            'deadline': forms.DateInput(attrs={'type': 'date'}),
+            'date_echeance': forms.DateInput(attrs={'type': 'date'}),
         }

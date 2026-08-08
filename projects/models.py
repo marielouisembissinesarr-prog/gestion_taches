@@ -1,17 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# CORRIGÉ ICI : Model au lieu de py
+
 class Projet(models.Model):
-    nom = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    titre = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
     createur = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projets_crees')
-    membres = models.ManyToManyField(User, related_name='projets_membres')
+    membres = models.ManyToManyField(User, related_name='projets_membres', blank=True)
     date_creation = models.DateTimeField(auto_now_add=True)
-    date_modification = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.nom
+        return self.titre
+
 
 class Tache(models.Model):
     STATUT_CHOICES = [
@@ -19,20 +19,19 @@ class Tache(models.Model):
         ('en_cours', 'En cours'),
         ('termine', 'Terminé'),
     ]
-    
+
     PRIORITE_CHOICES = [
         ('basse', 'Basse'),
         ('moyenne', 'Moyenne'),
         ('haute', 'Haute'),
     ]
 
-    titre = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE, related_name='taches')
-    assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='taches_assignees')
+    titre = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
     statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='todo')
     priorite = models.CharField(max_length=20, choices=PRIORITE_CHOICES, default='moyenne')
-    deadline = models.DateField(null=True, blank=True)
+    date_echeance = models.DateField(blank=True, null=True)
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

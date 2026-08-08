@@ -1,0 +1,7 @@
+db.sqlite3
+staticfiles/
+*.pyc
+__pycache__/
+.env
+env_projet/
+.vscode/
