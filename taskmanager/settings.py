@@ -150,3 +150,16 @@ ALLOWED_HOSTS = [
 ]
 
 LOGIN_REDIRECT_URL = 'dashboard'
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://gestiontaches-production-f5b2.up.railway.app',
+    'https://gestion-taches-rpay.onrender.com',  # <-- TON URL EXACTE
+]
+
+ALLOWED_HOSTS = [
+    'gestiontaches-production-f5b2.up.railway.app',
+    'gestion-taches-rpay.onrender.com',  # <-- TON DOMAINE EXACT
+    'localhost',
+    '127.0.0.1',
+]
