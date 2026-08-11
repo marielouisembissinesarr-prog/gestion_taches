@@ -1,20 +1,16 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from .forms import CustomUserCreationForm  # <-- Utilise impérativement CustomUserCreationForm
+
 
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)  # Connexion automatique après création du compte
-            return redirect('dashboard')
+            form.save()
+            messages.success(request, "Compte créé avec succès ! Vous pouvez maintenant vous connecter.")
+            return redirect('login')
     else:
-        form = UserCreationForm()
-    
+        form = CustomUserCreationForm()
+        
     return render(request, 'accounts/register.html', {'form': form})
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('login')
