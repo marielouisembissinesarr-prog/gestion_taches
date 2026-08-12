@@ -2,26 +2,27 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{{ projet.nom }}</title>
+    <title>{{ projet.titre }}</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
         .container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         .btn { padding: 8px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 14px; }
-        .tache-card { border-left: 4px solid #007bff; background: #f9f9f9; padding: 10px 15px; margin: 10px 0; }
-        .badge { padding: 3px 8px; border-radius: 3px; font-size: 12px; color: white; font-weight: bold; }
+        .tache-card { border-left: 4px solid #007bff; background: #f9f9f9; padding: 10px 15px; margin: 10px 0; border-radius: 0 5px 5px 0; }
+        .badge { padding: 4px 8px; border-radius: 3px; font-size: 12px; color: white; font-weight: bold; display: inline-block; }
         .todo { background: #6c757d; } .en_cours { background: #ffc107; color: black; } .termine { background: #28a745; }
+        .actions a { margin-left: 8px; font-size: 13px; text-decoration: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="{% url 'dashboard' %}">← Retour au tableau de bord</a>
-        <h1>{{ projet.nom }}</h1>
-        <p>{{ projet.description }}</p>
+        <a href="{% url 'dashboard' %}" style="text-decoration: none; color: #007bff;">← Retour au tableau de bord</a>
+        <h1 style="margin-top: 15px;">{{ projet.titre }}</h1>
+        <p style="color: #555;">{{ projet.description|default:"Aucune description fournie." }}</p>
         
         <p>
             <small>Créateur : <strong>{{ projet.createur.username }}</strong></small>
             {% if projet.createur == request.user %}
-                | <a href="{% url 'projet_update' projet.id %}" style="color: #ffc107;">Modifier le projet</a>
+                | <a href="{% url 'projet_update' projet.id %}" style="color: #e0a800;">Modifier le projet</a>
                 | <a href="{% url 'projet_delete' projet.id %}" style="color: #dc3545;">Supprimer le projet</a>
             {% endif %}
         </p>
@@ -35,20 +36,34 @@
 
         {% for tache in taches %}
             <div class="tache-card">
-                <h3><a href="{% url 'tache_detail' tache.id %}">{{ tache.titre }}</a></h3>
-                <p>{{ tache.description|truncatewords:15 }}</p>
-                <p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0;"><a href="{% url 'tache_detail' tache.id %}" style="color: #333; text-decoration: none;">{{ tache.titre }}</a></h3>
+                    <div class="actions">
+                        <a href="{% url 'tache_update' tache.id %}" style="color: #007bff;">✏️ Modifier</a>
+                        <a href="{% url 'tache_delete' tache.id %}" style="color: #dc3545;">🗑️ Supprimer</a>
+                    </div>
+                </div>
+                
+                <p style="margin: 8px 0; color: #666;">{{ tache.description|default:""|truncatewords:15 }}</p>
+                
+                <p style="margin-bottom: 0;">
                     <span class="badge {{ tache.statut }}">{{ tache.get_statut_display }}</span>
                     <span class="badge" style="background: #17a2b8;">Priorité : {{ tache.get_priorite_display }}</span>
-                    {% if tache.assignee %}
-                        <small style="margin-left: 10px;">Assignée à : <strong>{{ tache.assignee.username }}</strong></small>
+                    
+                    <!-- 📍 CORRECTION ICI : tache.assigne_a au lieu de tache.assignee -->
+                    {% if tache.assigne_a %}
+                        <span style="margin-left: 10px; font-size: 13px; color: #28a745; font-weight: bold;">
+                            👤 Assigné à : {{ tache.assigne_a.username }}
+                        </span>
                     {% else %}
-                        <small style="margin-left: 10px; color: #dc3545;">Non assignée</small>
+                        <span style="margin-left: 10px; font-size: 13px; color: #dc3545;">
+                            ⚪ Non assignée
+                        </span>
                     {% endif %}
                 </p>
             </div>
         {% empty %}
-            <p style="color: #777;">Aucune tâche dans ce projet pour le moment.</p>
+            <p style="color: #777; margin-top: 15px;">Aucune tâche dans ce projet pour le moment.</p>
         {% endfor %}
     </div>
 </body>
