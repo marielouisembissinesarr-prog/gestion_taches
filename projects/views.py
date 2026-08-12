@@ -99,7 +99,7 @@ def tache_create(request, projet_id):
     raise PermissionDenied
 
   if request.method == "POST":
-    form = TacheForm(request.POST, projet=projet)  # 👈 projet transmis
+    form = TacheForm(request.POST, projet=projet)
     if form.is_valid():
       tache = form.save(commit=False)
       tache.projet = projet
@@ -109,7 +109,7 @@ def tache_create(request, projet_id):
       )
       return redirect("projet_detail", id=projet.id)
   else:
-    form = TacheForm(projet=projet)  # 👈 projet transmis
+    form = TacheForm(projet=projet)
 
   return render(
       request,
@@ -133,15 +133,13 @@ def tache_update(request, id):
     raise PermissionDenied
 
   if request.method == "POST":
-    form = TacheForm(
-        request.POST, instance=tache, projet=tache.projet
-    )  # 👈 projet transmis
+    form = TacheForm(request.POST, instance=tache, projet=tache.projet)
     if form.is_valid():
       form.save()
       messages.info(request, f'✏️ Tâche "{tache.titre}" modifiée avec succès.')
       return redirect("projet_detail", id=tache.projet.id)
   else:
-    form = TacheForm(instance=tache, projet=tache.projet)  # 👈 projet transmis
+    form = TacheForm(instance=tache, projet=tache.projet)
 
   return render(
       request,
@@ -156,8 +154,16 @@ def tache_delete(request, id):
   projet_id = tache.projet.id
   if not user_has_project_access(request.user, tache.projet):
     raise PermissionDenied
+
   if request.method == "POST":
     titre = tache.titre
     tache.delete()
     messages.warning(request, f'🗑️ Tâche "{titre}" supprimée.')
     return redirect("projet_detail", id=projet_id)
+
+  # 👈 C'est ce return qui manquait pour afficher la page de confirmation :
+  return render(
+      request,
+      "projects/tache_confirm_delete.html",
+      {"tache": tache, "projet": tache.projet},
+  )
