@@ -1,24 +1,42 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ titre }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .btn { padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>{{ titre }}</h1>
-        <h3>Projet : {{ projet.titre }}</h3>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn">Enregistrer la tâche</button>
-            <a href="{% url 'projet_detail' projet.id %}" style="margin-left: 15px; color: #666;">Annuler</a>
-        </form>
+{% extends 'base.html' %}
+
+{% block title %}{{ titre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">{{ titre }}</h5>
+        </div>
+        <div class="card-body">
+            {% if projet %}
+                <h6 class="text-muted mb-3">Projet : <strong>{{ projet.titre }}</strong></h6>
+            {% endif %}
+            
+            <form method="POST">
+                {% csrf_token %}
+                
+                <!-- Boucle propre sur les champs du formulaire avec classes Bootstrap -->
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger small mt-1">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="d-flex justify-content-between mt-4">
+                    {% if projet %}
+                        <a href="{% url 'projet_detail' projet.id %}" class="btn btn-outline-secondary">Annuler</a>
+                    {% else %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Annuler</a>
+                    {% endif %}
+                    <button type="submit" class="btn btn-success">💾 Enregistrer la tâche</button>
+                </div>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
