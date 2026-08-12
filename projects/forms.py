@@ -27,9 +27,11 @@ class TacheForm(forms.ModelForm):
         'assigne_a',
         'date_echeance',
     ]
-    widgets = {
-        'date_echeance': forms.DateInput(attrs={'type': 'date'}),
-    }
+   widgets = {
+    'date_echeance': forms.DateInput(
+        attrs={'type': 'date', 'class': 'form-control'}, format='%Y-%m-%d'
+    ),
+}
 
   def __init__(self, *args, **kwargs):
     projet = kwargs.pop('projet', None)

@@ -1,25 +1,78 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Détail de la Tâche</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .btn { padding: 8px 12px; color: white; text-decoration: none; border-radius: 4px; font-size: 14px; display: inline-block; margin-top: 15px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <a href="{% url 'projet_detail' tache.projet.id %}">← Retour au projet</a>
-        <h1>{{ tache.titre }}</h1>
-        <p><strong>Description :</strong> {{ tache.description|default:"Aucune description." }}</p>
-        <p><strong>Statut :</strong> {{ tache.get_statut_display }}</p>
-        <p><strong>Priorité :</strong> {{ tache.get_priorite_display }}</p>
-        <p><strong>Date limite (Deadline) :</strong> {{ tache.deadline|default:"Pas de date limite définie" }}</p>
-        
-        <a href="{% url 'tache_update' tache.id %}" class="btn" style="background: #ffc107; color: black;">Modifier la tâche</a>
-        <a href="{% url 'tache_delete' tache.id %}" class="btn" style="background: #dc3545;">Supprimer la tâche</a>
+{% extends 'base.html' %}
+
+{% block title %}{{ tache.titre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 700px;">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'projet_detail' tache.projet.id %}">{{ tache.projet.titre }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ tache.titre }}</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <h3 class="card-title mb-0">{{ tache.titre }}</h3>
+                <div>
+                    {% if tache.priorite == 'haute' %}
+                        <span class="badge bg-danger">Priorité Haute</span>
+                    {% elif tache.priorite == 'moyenne' %}
+                        <span class="badge bg-warning text-dark">Priorité Moyenne</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Priorité Basse</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <strong>Statut :</strong>
+                {% if tache.statut == 'termine' %}
+                    <span class="badge bg-success">Terminé</span>
+                {% elif tache.statut == 'en_cours' %}
+                    <span class="badge bg-primary">En cours</span>
+                {% else %}
+                    <span class="badge bg-secondary">À faire</span>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <strong>Assigné à :</strong>
+                {% if tache.assigne_a %}
+                    <span>👤 {{ tache.assigne_a.username }}</span>
+                {% else %}
+                    <span class="text-muted">Non assigné</span>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <strong>Date limite (Deadline) :</strong>
+                {% if tache.date_echeance %}
+                    <span>📅 {{ tache.date_echeance|date:"d/m/Y" }}</span>
+                {% else %}
+                    <span class="text-muted">Pas de date limite définie</span>
+                {% endif %}
+            </div>
+
+            <hr>
+
+            <h6>Description :</h6>
+            {% if tache.description %}
+                <p class="card-text text-secondary">{{ tache.description|linebreaks }}</p>
+            {% else %}
+                <p class="text-muted italic">Aucune description fournie.</p>
+            {% endif %}
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{% url 'projet_detail' tache.projet.id %}" class="btn btn-outline-secondary">⬅️ Retour au projet</a>
+                <div>
+                    <a href="{% url 'tache_update' tache.id %}" class="btn btn-warning text-dark me-2">✏️ Modifier</a>
+                    <a href="{% url 'tache_delete' tache.id %}" class="btn btn-danger">🗑️ Supprimer</a>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
